@@ -1,5 +1,7 @@
 # r2p
 
+C++/Qt
+
 2 coisas importantes:
  * client-side apps
  * performance
