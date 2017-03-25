@@ -3,8 +3,9 @@
 TODO in Projects
 
 ## Build
+`qtcreator` or:
+
 ### Linux
 
-	cd r2p
 	qmake
 	make
