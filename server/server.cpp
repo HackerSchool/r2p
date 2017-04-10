@@ -12,9 +12,3 @@ server::~server()
 {
     delete ui;
 }
-
-void server::on_quitButton_clicked()
-{
-    puts("Quit button pressed!");
-    exit(0);
-}

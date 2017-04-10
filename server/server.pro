@@ -1,10 +1,10 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-03-25T18:12:35
+# Project created by QtCreator 2017-03-25T18:14:26
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,9 +23,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += main.cpp\
-        server.cpp
+SOURCES += main.cpp \
+        server.cpp \
+        r2p.cpp
 
-HEADERS  += server.h
+HEADERS  += server.h \
+		r2p.h
 
 FORMS    += server.ui
+
+RESOURCES += icons.qrc

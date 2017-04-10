@@ -15,9 +15,6 @@ public:
     explicit server(QWidget *parent = 0);
     ~server();
 
-private slots:
-    void on_quitButton_clicked();
-
 private:
     Ui::server *ui;
 };
