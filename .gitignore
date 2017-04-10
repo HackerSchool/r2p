@@ -1,3 +1,6 @@
+client
+server
+
 # Prerequisites
 *.d
 
@@ -45,13 +48,14 @@
 
 # Qt-es
 
-/.qmake.cache
-/.qmake.stash
+.qmake.cache
+.qmake.stash
 *.pro.user
 *.pro.user.*
 *.qbs.user
 *.qbs.user.*
 *.moc
+moc_predefs.h
 moc_*.cpp
 qrc_*.cpp
 ui_*.h

@@ -1,10 +1,9 @@
 #include "r2p.h"
 
-R2PServer::R2PServer(QObject *parent) :
-	QObject(parent)
+R2PServer::R2PServer(QObject *parent)
+	: QObject(parent)
+	, server(new QTcpServer(this))
 {
-	server = new QTcpServer(this);
-
 	// Bind our newConnection() slot to any new connection.
 	connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
 
@@ -17,9 +16,26 @@ R2PServer::R2PServer(QObject *parent) :
 void R2PServer::newConnection()
 {
 	// Grab the connetion's socket.
-	QTcpSocket *socket = server->nextPendingConnection();
+	socket = server->nextPendingConnection();
 
-	// TODO: parse client request & reply
+	// Run our parseRequest() slot when there's any new data on the socket.
+    connect(socket, SIGNAL(readyRead()), this, SLOT(parseRequest()));
 
-	socket->close();
+	// Init our buffer.
+	buf.setDevice(socket); // Bind the buffer to our remote socket.
+	buf.setVersion(QDataStream::Qt_5_8);
+}
+
+void R2PServer::parseRequest()
+{
+	buf.startTransaction();
+
+	QString request;
+	buf >> request;
+
+	if (!buf.commitTransaction())
+		return;
+
+	// TODO: parse & reply
+	qDebug() << request;
 }

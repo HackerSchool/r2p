@@ -16,9 +16,12 @@ signals:
 
 public slots:
 	void newConnection();
+	void parseRequest();
 
 private:
-	QTcpServer *server;
+	QTcpServer *server; // Ourselves
+	QTcpSocket *socket; // The other r2p app
+	QDataStream buf; // Buffer for the request from `socket`.
 };
 
 #endif // _R2P_H

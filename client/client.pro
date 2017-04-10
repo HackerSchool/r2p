@@ -33,3 +33,6 @@ HEADERS  += client.h \
 FORMS    += client.ui
 
 RESOURCES += icons.qrc
+
+CONFIG -= release
+CONFIG += debug
