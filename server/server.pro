@@ -25,12 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
         server.cpp \
-        r2p.cpp
+        r2p.cpp \
+    filebrowser.cpp
 
 HEADERS  += server.h \
-		r2p.h
+		r2p.h \
+    filebrowser.h
 
-FORMS    += server.ui
+FORMS    += server.ui \
+    filebrowser.ui
 
 RESOURCES += icons.qrc
 
