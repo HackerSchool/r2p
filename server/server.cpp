@@ -8,7 +8,6 @@ server::server(QWidget *parent) :
     ui(new Ui::server)
 {
     ui->setupUi(this);
-    connect(ui->addGameButton, SIGNAL(click()), this, SLOT(openFileBrowser()));
 }
 
 server::~server()

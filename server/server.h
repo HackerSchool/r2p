@@ -2,7 +2,7 @@
 #define SERVER_H
 
 #include <QMainWindow>
-#include "filebrowser.h"
+#include "fileBrowser.h"
 
 namespace Ui {
 class server;

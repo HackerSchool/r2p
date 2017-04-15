@@ -1,15 +1,17 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-03-25T18:14:26
+# Project created by QtCreator 2017-04-14T23:42:19
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += network
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       -= core gui
 
-TARGET = client
-TEMPLATE = app
+TARGET = r2p
+TEMPLATE = lib
+
+DEFINES += R2P_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -22,22 +24,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+SOURCES += r2p.cpp
 
-SOURCES += main.cpp \
-        client.cpp
+HEADERS += r2p.h\
+        r2p_global.h
 
-HEADERS  += client.h
-
-FORMS    += client.ui
-
-RESOURCES += icons.qrc
-
-CONFIG -= release
-CONFIG += debug
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../r2p/release/ -lr2p
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../r2p/debug/ -lr2p
-else:unix: LIBS += -L$$PWD/../r2p/ -lr2p
-
-INCLUDEPATH += $$PWD/../r2p
-DEPENDPATH += $$PWD/../r2p
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}

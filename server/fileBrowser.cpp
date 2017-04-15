@@ -1,4 +1,4 @@
-#include "filebrowser.h"
+#include "fileBrowser.h"
 #include "ui_filebrowser.h"
 
 FileBrowser::FileBrowser(QWidget *parent) :

@@ -25,11 +25,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
         server.cpp \
-        r2p.cpp \
     filebrowser.cpp
 
 HEADERS  += server.h \
-		r2p.h \
     filebrowser.h
 
 FORMS    += server.ui \
@@ -39,3 +37,10 @@ RESOURCES += icons.qrc
 
 CONFIG -= release
 CONFIG += debug
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../r2p/release/ -lr2p
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../r2p/debug/ -lr2p
+else:unix: LIBS += -L$$PWD/../r2p/ -lr2p
+
+INCLUDEPATH += $$PWD/../r2p
+DEPENDPATH += $$PWD/../r2p

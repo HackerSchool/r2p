@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     server w;
     w.show();
 
-    R2PServer s;
+    R2P r;
 
     return a.exec();
 }
