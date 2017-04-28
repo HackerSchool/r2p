@@ -5,8 +5,8 @@ R2P::R2P(int port)
 	, remote(new QTcpSocket(this))
 	, buf(new QDataStream)
 {
-	// Bind our newConnection() slot to any new connection.
-	connect(local, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
+	// Bind a new connection to our incomingConnecton slot.
+	connect(local, &QTcpServer::newConnection, this, &R2P::incomingConnection);
 
 	// Start listening.
 	if (!local->listen(QHostAddress::Any, port)) {
@@ -27,7 +27,7 @@ void R2P::incomingConnection()
 	remote = local->nextPendingConnection();
 
 	// Run our parseRequest() slot when there's any new data on the socket.
-    connect(remote, SIGNAL(readyRead()), this, SLOT(parseRequest()));
+    connect(remote, &QTcpSocket::readyRead, this, &R2P::parseRequest);
 
 	// Init our buffer.
 	buf->setDevice(remote); // Bind the buffer to our remote socket.
