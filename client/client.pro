@@ -41,3 +41,9 @@ else:unix: LIBS += -L$$PWD/../r2p/ -lr2p
 
 INCLUDEPATH += $$PWD/../r2p
 DEPENDPATH += $$PWD/../r2p
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../r2p/release/libr2p.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../r2p/debug/libr2p.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../r2p/release/r2p.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../r2p/debug/r2p.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../r2p/libr2p.a
