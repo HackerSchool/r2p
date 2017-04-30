@@ -31,5 +31,5 @@ unix {
     INSTALLS += target
 }
 
-CONFIG -= debug
-CONFIG += release
+CONFIG += debug
+CONFIG -= release

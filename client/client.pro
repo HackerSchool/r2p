@@ -32,8 +32,8 @@ FORMS    += client.ui
 
 RESOURCES += icons.qrc
 
-CONFIG -= debug
-CONFIG += release
+CONFIG += debug
+CONFIG -= release
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../r2p/release/ -lr2p
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../r2p/debug/ -lr2p

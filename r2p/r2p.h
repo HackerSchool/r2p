@@ -23,8 +23,8 @@ public:
 	explicit R2P(QObject *parent = nullptr, int localPort = PORT);
 	~R2P();
 
-	void sendRequest(QString *const remoteAddress, const int remotePort,
-		const uint8_t requestType, QString *const payload);
+	void sendRequest(const QString remoteAddress, const int remotePort,
+		const char requestType, const QString payload);
 
 private:
 	QTcpServer local;

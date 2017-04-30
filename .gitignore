@@ -1,3 +1,10 @@
+client/debug
+client/release
+server/debug
+server/release
+r2p/debug
+r2p/release
+
 # Prerequisites
 *.d
 
