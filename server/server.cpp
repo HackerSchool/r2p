@@ -3,9 +3,10 @@
 
 #include <QFileDialog>
 
-server::server(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::server)
+server::server(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::server)
+    , r2p(this, 40500)
 {
     ui->setupUi(this);
 }
@@ -15,13 +16,7 @@ server::~server()
     delete ui;
 }
 
-void server::openFileBrowser()
-{
-    browser = new FileBrowser();
-    browser->show();
-}
-
 void server::on_addGameButton_clicked()
 {
-    openFileBrowser();
+    qDebug() << QFileDialog::getOpenFileName();
 }

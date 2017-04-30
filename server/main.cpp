@@ -6,10 +6,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     server w;
     w.show();
-
-    R2P r;
 
     return a.exec();
 }

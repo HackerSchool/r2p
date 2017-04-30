@@ -2,28 +2,30 @@
 #define SERVER_H
 
 #include <QMainWindow>
-#include "fileBrowser.h"
+
+#include "r2p.h"
 
 namespace Ui {
-class server;
+	class server;
 }
 
 class server : public QMainWindow
 {
     Q_OBJECT
 
-public slots:
-    void openFileBrowser();
-
 public:
-    explicit server(QWidget *parent = 0);
+    explicit server(QWidget *parent = nullptr);
     ~server();
-private slots:
-    void on_addGameButton_clicked();
+
+public slots:
+	void on_addGameButton_clicked();
 
 private:
     Ui::server *ui;
-    FileBrowser *browser;
+
+	R2P r2p;
+	QString remoteAddress;
+	int remotePort;
 };
 
 #endif // SERVER_H

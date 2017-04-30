@@ -3,37 +3,36 @@
 
 #include <QtNetwork>
 
-#include "r2p_global.h"
+typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
 
 const int PORT = 53390;
 
 namespace Request {
-	enum {GET_GAME_LIST, START_STREAM};
-};
-
+	enum : char {GET_GAME_LIST = 1, START_STREAM};
+}
 namespace Reply {
-	enum {GAME_LIST, STREAM_STARTED};
-};
+	enum : char {GAME_LIST = 1, STREAM_STARTED};
+}
+#define SPLIT "\x01"
 
-class R2PSHARED_EXPORT R2P : public QObject
+class R2P : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit R2P(int port = PORT);
+	explicit R2P(QObject *parent = nullptr, int localPort = PORT);
 	~R2P();
-	void requestGameList();
 
-public slots:
-	void incomingConnection();
-	void parseRequest();
+	void sendRequest(QString *const remoteAddress, const int remotePort,
+		const uint8_t requestType, QString *const payload);
 
 private:
-	QTcpServer *local = 0; // Ourselves
-	QTcpSocket *remote = 0; // The other r2p app
-	QDataStream *buf = 0; // Buffer for the request from `remote`.
+	QTcpServer local;
+	void receiveRequest();
+	void parseRequest(QTcpSocket *const remote, QString *const request);
+	void parseReply(QString reply);
 
-
+	void socketError(QAbstractSocket::SocketError error);
 };
 
 #endif // R2P_H

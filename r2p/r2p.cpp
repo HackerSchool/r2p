@@ -1,60 +1,115 @@
 #include "r2p.h"
 
-R2P::R2P(int port)
-	: local(new QTcpServer(this))
-	, remote(new QTcpSocket(this))
-	, buf(new QDataStream)
+R2P::R2P(QObject *parent, int localPort)
+	: QObject(parent)
+	, local(this)
 {
-	// Bind a new connection to our incomingConnecton slot.
-	connect(local, &QTcpServer::newConnection, this, &R2P::incomingConnection);
+    connect(&local, &QTcpServer::acceptError, this, &R2P::socketError);
+    connect(&local, &QTcpServer::newConnection, this, &R2P::receiveRequest);
 
-	// Start listening.
-	if (!local->listen(QHostAddress::Any, port)) {
-		qDebug() << "Error on TCP listen.";
+	if (!local.listen(QHostAddress::Any, localPort)) {
+		qDebug("Error listening on 0.0.0.0:%d", localPort);
 	}
 }
 
 R2P::~R2P()
 {
-	delete local;
-	delete remote;
-	delete buf;
 }
 
-void R2P::incomingConnection()
+void R2P::socketError(QAbstractSocket::SocketError error)
 {
-	// Grab the connetion's socket.
-	remote = local->nextPendingConnection();
-
-	// Run our parseRequest() slot when there's any new data on the socket.
-    connect(remote, &QTcpSocket::readyRead, this, &R2P::parseRequest);
-
-	// Init our buffer.
-	buf->setDevice(remote); // Bind the buffer to our remote socket.
-	buf->setVersion(QDataStream::Qt_5_8);
+	qDebug() << "R2P::socketError:" << error;
 }
 
-void R2P::parseRequest()
+// Receive request
+// Messages start with one byte of type Message and end with a newline char.
+void R2P::receiveRequest()
 {
-	buf->startTransaction();
+	QTcpSocket *remote = local.nextPendingConnection();
+    connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
 
-	QString request;
-	*buf >> request;
+	QString *request = new QString;
+	connect(remote, &QAbstractSocket::readyRead, [=] ()
+	{
+		request->append(remote->readAll());
 
-	if (!buf->commitTransaction())
-		return;
-
-	// TODO: parse & reply
-	qDebug() << request;
+		if (request->contains('\n')) {
+			qDebug() << "received request" << *request;
+			parseRequest(remote, request);
+			delete remote;
+			delete request;
+		}
+	});
 }
 
-void R2P::requestGameList()
+// Send reply
+void R2P::parseRequest(QTcpSocket *const remote, QString *const request)
 {
-	QByteArray request;
-	QDataStream lbuf(&request, QIODevice::WriteOnly);
-	lbuf.setVersion(QDataStream::Qt_5_8);
+	uint8_t requestType = request->toUtf8()[0];
+	QString replyBuffer;
 
-	lbuf << Request::GET_GAME_LIST;
+	// TODO: Parse request
+	switch (requestType)
+	{
+		case Request::GET_GAME_LIST:
+			replyBuffer = Request::GET_GAME_LIST;
+			replyBuffer += "Half Life 3" SPLIT "Portal 3" "\n";
+			break;
 
-	remote->write(request);
+		default:
+			// XXX
+			break;
+	}
+
+	remote->write(replyBuffer.toUtf8());
+	qDebug() << "sent reply" << replyBuffer.toUtf8();
+	remote->flush();
+}
+
+// Send request
+void R2P::sendRequest(QString *const remoteAddress, const int remotePort,
+	const uint8_t requestType, QString *const payload)
+{
+	QTcpSocket *remote = new QTcpSocket;
+    connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
+
+	remote->connectToHost(*remoteAddress, remotePort);
+    connect(remote, &QAbstractSocket::connected, [=] ()
+    {
+		// request = "%d%s\n".format(requestType, payload)
+		remote->write(QByteArray(1, requestType).append(*payload).append('\n'));
+		qDebug() << "sent request" << QByteArray(1, requestType).append(*payload).append('\n');
+		remote->flush();
+    });
+
+    // TODO: receive reply & parse & act on it
+	QString *reply = new QString;
+	connect(remote, &QAbstractSocket::readyRead, [=] ()
+	{
+		reply->append(remote->readAll());
+
+		if (reply->contains('\n')) {
+			delete remote;
+			qDebug() << "received reply" << *reply;
+			parseReply(*reply);
+			delete reply;
+		}
+	});
+}
+
+void R2P::parseReply(QString reply)
+{
+	uint8_t replyType = reply.toUtf8()[0];
+
+	// TODO: Parse reply
+	switch (replyType)
+	{
+		case Reply::GAME_LIST:
+			// showGameList(reply[1:]);
+			break;
+
+		default:
+			// XXX
+			break;
+	}
 }
