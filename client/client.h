@@ -16,6 +16,7 @@ class client : public QMainWindow
 public:
     explicit client(QWidget *parent = nullptr);
     ~client();
+    void sendRequest(char requestType, QString payload);
 
 private:
     Ui::client *ui;

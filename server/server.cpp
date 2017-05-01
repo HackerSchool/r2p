@@ -16,6 +16,11 @@ server::~server()
     delete ui;
 }
 
+void server::sendRequest(char requestType, QString payload)
+{
+	r2p.sendRequest(remoteAddress, remotePort, requestType, payload);
+}
+
 void server::on_addGameButton_clicked()
 {
     qDebug() << QFileDialog::getOpenFileName();

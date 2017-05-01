@@ -16,6 +16,7 @@ class server : public QMainWindow
 public:
     explicit server(QWidget *parent = nullptr);
     ~server();
+    void sendRequest(char requestType, QString payload);
 
 public slots:
 	void on_addGameButton_clicked();

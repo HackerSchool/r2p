@@ -80,6 +80,7 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 
 	connect(remote, &QAbstractSocket::connected, [=] ()
     {
+		qDebug() << "sent request" << *buf;
 		remote->write(*buf);
 		remote->flush();
 		delete buf;

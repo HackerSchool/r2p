@@ -17,3 +17,8 @@ client::~client()
     delete ui;
 }
 
+
+void client::sendRequest(char requestType, QString payload)
+{
+	r2p.sendRequest(remoteAddress, remotePort, requestType, payload);
+}
