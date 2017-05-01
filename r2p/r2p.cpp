@@ -36,8 +36,9 @@ void R2P::receiveRequest()
 		if (request->contains('\n')) {
 			qDebug() << "received request" << *request;
 			parseRequest(remote, request);
-			delete request;
+			remote->disconnectFromHost();
 			remote->deleteLater();
+			delete request;
 		}
 	});
 }
@@ -45,7 +46,7 @@ void R2P::receiveRequest()
 // Send reply
 void R2P::parseRequest(QTcpSocket *const remote, QString *const request)
 {
-	uint8_t requestType = request->toUtf8()[0];
+	char requestType = request->toUtf8()[0];
 	QString replyBuffer;
 
 	// TODO: Parse request
@@ -62,8 +63,8 @@ void R2P::parseRequest(QTcpSocket *const remote, QString *const request)
 	}
 
 	remote->write(replyBuffer.toUtf8());
-	qDebug() << "sent reply" << replyBuffer.toUtf8();
 	remote->flush();
+	qDebug() << "sent reply" << replyBuffer.toUtf8();
 }
 
 // Send request
@@ -93,27 +94,28 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 		reply->append(remote->readAll());
 
 		if (reply->contains('\n')) {
+			remote->disconnectFromHost();
+			remote->deleteLater();
 			qDebug() << "received reply" << *reply;
 			parseReply(*reply);
 			delete reply;
-			remote->deleteLater();
 		}
 	});
 }
 
 void R2P::parseReply(QString reply)
 {
-	uint8_t replyType = reply.toUtf8()[0];
+	char replyType = reply.toUtf8()[0];
 
 	// TODO: Parse reply
 	switch (replyType)
 	{
 		case Reply::GAME_LIST:
-			// showGameList(reply[1:]);
+			// TODO
+			// emit got_game_list
 			break;
 
 		default:
-			// XXX
 			break;
 	}
 }

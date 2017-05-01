@@ -8,7 +8,7 @@ typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::Soc
 const int PORT = 53390;
 
 namespace Request {
-	enum : char {GET_GAME_LIST = 1, START_STREAM};
+	enum : char {GET_GAME_LIST = 1, START_STREAM, STREAM_STARTED};
 }
 namespace Reply {
 	enum : char {GAME_LIST = 1, STREAM_STARTED};
