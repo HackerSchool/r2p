@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "fileBrowser.h"
+#include "connectWindow.h"
 #include "../r2p/r2p.h"
 
 namespace Ui {
@@ -19,9 +20,12 @@ public:
     void sendRequest(char requestType, QString payload);
 
 public slots:
-	void on_addGameButton_clicked();
     void openFileBrowser();
 
+
+private slots:
+    void on_ConnectButton_clicked();
+    void on_addGameButton_clicked();
 
 private:
     Ui::server *ui;
@@ -31,6 +35,7 @@ private:
 	int remotePort;
 
     FileBrowser *browser;
+    ConnectWindow *cWindow;
 };
 
 #endif // SERVER_H

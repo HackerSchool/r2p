@@ -1,4 +1,5 @@
 #include "server.h"
+#include "connectWindow.h"
 #include "ui_server.h"
 
 #include <QFileDialog>
@@ -21,6 +22,18 @@ void server::sendRequest(char requestType, QString payload)
 	r2p.sendRequest(remoteAddress, remotePort, requestType, payload);
 }
 
+void server::on_addGameButton_clicked()
+{
+    openFileBrowser();
+}
+
+void server::on_ConnectButton_clicked()
+{
+    cWindow = new ConnectWindow(this);
+    cWindow->show();
+}
+
+
 void server::openFileBrowser()
 {
     browser = new FileBrowser(this);
@@ -33,7 +46,3 @@ void server::openFileBrowser()
     }
 }
 
-void server::on_addGameButton_clicked()
-{
-    openFileBrowser();
-}

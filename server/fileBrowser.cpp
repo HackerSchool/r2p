@@ -22,10 +22,7 @@ FileBrowser::FileBrowser(QWidget *parent) :
     filemodel->setRootPath(sPath);
 
     ui->listView->setModel(filemodel);
-
-
 }
-
 
 FileBrowser::~FileBrowser()
 {
