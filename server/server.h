@@ -2,8 +2,8 @@
 #define SERVER_H
 
 #include <QMainWindow>
-
-#include "r2p.h"
+#include "fileBrowser.h"
+#include "../r2p/r2p.h"
 
 namespace Ui {
 	class server;
@@ -20,6 +20,8 @@ public:
 
 public slots:
 	void on_addGameButton_clicked();
+    void openFileBrowser();
+
 
 private:
     Ui::server *ui;
@@ -27,6 +29,8 @@ private:
 	R2P r2p;
 	QString remoteAddress;
 	int remotePort;
+
+    FileBrowser *browser;
 };
 
 #endif // SERVER_H

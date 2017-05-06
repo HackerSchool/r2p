@@ -24,11 +24,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp \
-        server.cpp
+        server.cpp \
+        fileBrowser.cpp
 
-HEADERS  += server.h
+HEADERS  += server.h \
+            fileBrowser.h
 
-FORMS    += server.ui
+FORMS    += server.ui \
+            fileBrowser.ui
 
 RESOURCES += icons.qrc
 
