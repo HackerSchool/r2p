@@ -8,10 +8,10 @@ typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::Soc
 const int PORT = 53390;
 
 namespace Request {
-	enum : char {GET_GAME_LIST = 1, START_STREAM, STREAM_STARTED};
+	enum : char {GET_GAME_LIST = 'a', START_STREAM, STREAM_STARTED};
 }
 namespace Reply {
-	enum : char {GAME_LIST = 1, STREAM_STARTED};
+	enum : char {GAME_LIST = 'a', STREAM_STARTED, OK};
 }
 #define SPLIT "\x01"
 
@@ -27,8 +27,8 @@ public:
 		const char requestType, const QString payload);
 
 signals:
-	void gotReply(QString const reply);
-	void gotRequest(QTcpSocket *const remote, QString const request);
+	void gotReply(char replyType, QString const reply);
+	void gotRequest(QTcpSocket *const remote, char requestType, QString const request);
 
 private:
 	QTcpServer local;

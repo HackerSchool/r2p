@@ -5,27 +5,51 @@
 client::client(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::client)
+	, settings(new QSettings("HackerSchool", "R2Pc"))
 	, r2p(this, 40000)
 {
 	ui->setupUi(this);
 
-	connect(&r2p, &R2P::gotReply, [](QString const reply) {
-		qDebug() << "received reply" << reply;
-		// TODO: use reply
+	connect(&r2p, &R2P::gotReply, [](char replyType, QString const reply)
+	{
+		qDebug() << "got reply" << replyType << reply;
+		switch (replyType) {
+			case Reply::STREAM_STARTED:
+				// TODO: startFreerdp();
+
+			case Reply::GAME_LIST:
+				// TODO: updateGameList(reply);
+
+			default:
+				break;
+		}
 	});
 
-	connect(&r2p, &R2P::gotRequest, [](QTcpSocket *const remote, QString const request) {
-		qDebug() << "received request" << request;
-		// TODO: send reply
-	});
+	connect(&r2p, &R2P::gotRequest, [](QTcpSocket *const remote,
+		char requestType, QString const request)
+	{
+		qDebug() << "got request" << requestType << request;
+		QString buf;
+		switch (requestType) {
+			case Request::STREAM_STARTED:
+				buf.append(Reply::OK);
+				// TODO: startFreerdp();
+				break;
 
-	// XXX tmp test
-	r2p.sendRequest("127.0.0.1", 40500, Request::GET_GAME_LIST, "hrello");
+			default:
+				break;
+		}
+
+		buf.append('\n');
+		remote->write(buf.toUtf8());
+		remote->flush();
+	});
 }
 
 client::~client()
 {
 	delete ui;
+	delete settings;
 }
 
 
@@ -34,9 +58,16 @@ void client::sendRequest(char requestType, QString payload)
 	r2p.sendRequest(remoteAddress, remotePort, requestType, payload);
 }
 
+void client::on_refreshGamesButton_clicked()
+{
+	sendRequest(Request::GET_GAME_LIST);
+}
+
 void client::on_connectButton_clicked()
 {
-	cWindow = new ConnectWindow(this, &remoteAddress, &remotePort);
-	cWindow->show();
-	cWindow->setAttribute(Qt::WA_DeleteOnClose);
+	cWindow = new ConnectWindow(this, &remoteAddress, &remotePort, settings);
+
+	connect(cWindow, &QObject::destroyed, [this]() {
+		sendRequest(Request::START_STREAM);
+	});
 }

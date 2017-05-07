@@ -18,15 +18,16 @@ class server : public QMainWindow
 public:
 	explicit server(QWidget *parent = nullptr);
 	~server();
-	void sendRequest(char requestType, QString payload);
+	void sendRequest(char requestType, QString payload = "");
 
 private slots:
-	void on_ConnectButton_clicked();
+	void on_connectButton_clicked();
 	void on_addGameButton_clicked();
 
 private:
 	Ui::server *ui;
 
+	QSettings *settings;
 	R2P r2p;
 	QString remoteAddress;
 	int remotePort;

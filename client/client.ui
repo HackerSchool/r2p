@@ -34,7 +34,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QPushButton" name="addGameButton">
+        <widget class="QPushButton" name="refreshGamesButton">
          <property name="text">
           <string>Refresh</string>
          </property>

@@ -34,7 +34,7 @@ void R2P::receiveRequest()
 		request->append(remote->readAll());
 
 		if (request->contains('\n')) {
-			emit gotRequest(remote, *request);
+			emit gotRequest(remote, request->toUtf8()[0], request->mid(1));
 			delete request;
 			remote->disconnectFromHost();
 			remote->deleteLater();
@@ -53,10 +53,8 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 
 	QByteArray *buf = new QByteArray;
 	buf->append(requestType).append(payload).append('\n');
-
 	connect(remote, &QAbstractSocket::connected, [=] ()
 	{
-		qDebug() << "sent request" << *buf;
 		remote->write(*buf);
 		remote->flush();
 		delete buf;
@@ -68,55 +66,10 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 		reply->append(remote->readAll());
 
 		if (reply->contains('\n')) {
-			emit gotReply(*reply);
+			emit gotReply(reply->toUtf8()[0], reply->mid(1));
 			delete reply;
 			remote->disconnectFromHost();
 			remote->deleteLater();
 		}
 	});
 }
-
-// Send reply
-/*
-void R2P::parseRequest(QTcpSocket *const remote, QString *const request)
-{
-	char requestType = request->toUtf8()[0];
-	QString replyBuffer;
-
-	// TODO: Parse request
-	switch (requestType)
-	{
-		case Request::GET_GAME_LIST:
-			replyBuffer = Request::GET_GAME_LIST;
-			replyBuffer += "Half Life 3" SPLIT "Portal 3" "\n";
-			break;
-
-		default:
-			// XXX
-			break;
-	}
-
-	remote->write(replyBuffer.toUtf8());
-	remote->flush();
-	qDebug() << "sent reply" << replyBuffer.toUtf8();
-}
-
-
-
-void R2P::parseReply(QString reply)
-{
-	char replyType = reply.toUtf8()[0];
-
-	// TODO: Parse reply
-	switch (replyType)
-	{
-		case Reply::GAME_LIST:
-			// TODO
-			// emit got_game_list
-			break;
-
-		default:
-			break;
-	}
-}
-*/

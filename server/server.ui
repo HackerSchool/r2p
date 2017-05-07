@@ -41,7 +41,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="ConnectButton">
+        <widget class="QPushButton" name="connectButton">
          <property name="text">
           <string>Connect</string>
          </property>
