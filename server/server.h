@@ -24,6 +24,7 @@ public:
 private slots:
 	void on_connectButton_clicked();
 	void on_addGameButton_clicked();
+    void on_gameList_clicked(const QModelIndex &index);
 
 private:
 	Ui::server *ui;

@@ -83,3 +83,8 @@ void server::on_connectButton_clicked()
 		remotePort = port;
 	});
 }
+
+void server::on_gameList_clicked(const QModelIndex &index)
+{
+    qDebug() << index;
+}
