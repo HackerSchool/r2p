@@ -4,8 +4,8 @@ R2P::R2P(QObject *parent, int localPort)
 	: QObject(parent)
 	, local(this)
 {
-    connect(&local, &QTcpServer::acceptError, this, &R2P::socketError);
-    connect(&local, &QTcpServer::newConnection, this, &R2P::receiveRequest);
+	connect(&local, &QTcpServer::acceptError, this, &R2P::socketError);
+	connect(&local, &QTcpServer::newConnection, this, &R2P::receiveRequest);
 
 	if (!local.listen(QHostAddress::Any, localPort)) {
 		qDebug("Error listening on 0.0.0.0:%d", localPort);
@@ -26,7 +26,7 @@ void R2P::socketError(QAbstractSocket::SocketError error)
 void R2P::receiveRequest()
 {
 	QTcpSocket *remote = local.nextPendingConnection();
-    connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
+	connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
 
 	QString *request = new QString;
 	connect(remote, &QAbstractSocket::readyRead, [=] ()
@@ -36,7 +36,8 @@ void R2P::receiveRequest()
 		if (request->contains('\n')) {
 			emit gotRequest(remote, *request);
 			delete request;
-			// remote free'd by users
+			remote->disconnectFromHost();
+			remote->deleteLater();
 		}
 	});
 }
@@ -46,7 +47,7 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 	const char requestType, const QString payload)
 {
 	QTcpSocket *remote = new QTcpSocket;
-    connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
+	connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
 
 	remote->connectToHost(remoteAddress, remotePort);
 
@@ -54,12 +55,12 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 	buf->append(requestType).append(payload).append('\n');
 
 	connect(remote, &QAbstractSocket::connected, [=] ()
-    {
+	{
 		qDebug() << "sent request" << *buf;
 		remote->write(*buf);
 		remote->flush();
 		delete buf;
-    });
+	});
 
 	QString *reply = new QString;
 	connect(remote, &QAbstractSocket::readyRead, [=] ()

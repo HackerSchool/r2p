@@ -3,11 +3,11 @@
 #include "server.h"
 
 server::server(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::server)
-    , r2p(this, 40500)
+	: QMainWindow(parent)
+	, ui(new Ui::server)
+	, r2p(this, 40500)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
 	connect(&r2p, &R2P::gotReply, [](QString const reply) {
 		qDebug() << "received reply" << reply;
@@ -19,15 +19,12 @@ server::server(QWidget *parent)
 		// TODO: send reply
 		remote->write("hello\n");
 		remote->flush();
-
-		remote->disconnectFromHost();
-		remote->deleteLater();
 	});
 }
 
 server::~server()
 {
-    delete ui;
+	delete ui;
 }
 
 void server::sendRequest(char requestType, QString payload)
@@ -37,12 +34,13 @@ void server::sendRequest(char requestType, QString payload)
 
 void server::on_addGameButton_clicked()
 {
-    browser = new FileBrowser(this);
-    browser->show();
+	browser = new FileBrowser(this);
+	browser->show();
 }
 
 void server::on_ConnectButton_clicked()
 {
-    cWindow = new ConnectWindow(this);
-    cWindow->show();
+	cWindow = new ConnectWindow(this, &remoteAddress, &remotePort);
+	cWindow->show();
+	cWindow->setAttribute(Qt::WA_DeleteOnClose);
 }

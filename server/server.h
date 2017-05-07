@@ -13,26 +13,26 @@ namespace Ui {
 
 class server : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit server(QWidget *parent = nullptr);
-    ~server();
-    void sendRequest(char requestType, QString payload);
+	explicit server(QWidget *parent = nullptr);
+	~server();
+	void sendRequest(char requestType, QString payload);
 
 private slots:
-    void on_ConnectButton_clicked();
-    void on_addGameButton_clicked();
+	void on_ConnectButton_clicked();
+	void on_addGameButton_clicked();
 
 private:
-    Ui::server *ui;
+	Ui::server *ui;
 
 	R2P r2p;
 	QString remoteAddress;
 	int remotePort;
 
-    FileBrowser *browser;
-    ConnectWindow *cWindow;
+	FileBrowser *browser;
+	ConnectWindow *cWindow;
 };
 
 #endif // SERVER_H

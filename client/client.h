@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "r2p.h"
+#include "connectWindow.h"
 
 namespace Ui {
 	class client;
@@ -11,19 +12,24 @@ namespace Ui {
 
 class client : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit client(QWidget *parent = nullptr);
-    ~client();
-    void sendRequest(char requestType, QString payload);
+	explicit client(QWidget *parent = nullptr);
+	~client();
+	void sendRequest(char requestType, QString payload);
+
+private slots:
+	void on_connectButton_clicked();
 
 private:
-    Ui::client *ui;
+	Ui::client *ui;
 
 	R2P r2p;
 	QString remoteAddress;
 	int remotePort;
+
+	ConnectWindow *cWindow;
 };
 
 #endif // CLIENT_H
