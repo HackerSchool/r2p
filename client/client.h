@@ -32,6 +32,8 @@ private:
 	R2P r2p;
 	QString remoteAddress;
 	int remotePort;
+	QString remoteUser;
+	QString remotePass;
 
 	ConnectWindow *cWindow;
 };

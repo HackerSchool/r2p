@@ -69,10 +69,17 @@ void server::on_addGameButton_clicked()
 
 void server::on_connectButton_clicked()
 {
-	cWindow = new ConnectWindow(this, &remoteAddress, &remotePort, settings);
+	cWindow = new ConnectWindow(this, settings);
 
-	connect(cWindow, &QObject::destroyed, [this]() {
+	connect(cWindow, &QObject::destroyed, [this]()
+	{
 		// TODO: startRDP();
 		sendRequest(Request::STREAM_STARTED);
+	});
+
+	connect(cWindow, &ConnectWindow::gotInfo, [=] (QString host, int port)
+	{
+		remoteAddress = host;
+		remotePort = port;
 	});
 }

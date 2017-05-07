@@ -13,8 +13,11 @@ class ConnectWindow : public QDialog
 	Q_OBJECT
 
 public:
-	explicit ConnectWindow(QWidget *parent, QString *host, int *port, QSettings *settings);
+	explicit ConnectWindow(QWidget *parent, QSettings *settings);
 	~ConnectWindow();
+
+signals:
+	void gotInfo(QString host, int port, QString user, QString pass);
 
 private slots:
 	void on_buttonBox_accepted();
@@ -22,8 +25,6 @@ private slots:
 private:
 	Ui::ConnectWindow *ui;
 
-	QString *host;
-	int *port;
 	QSettings *settings;
 };
 

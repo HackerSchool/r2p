@@ -66,9 +66,19 @@ void client::on_refreshGamesButton_clicked()
 
 void client::on_connectButton_clicked()
 {
-	cWindow = new ConnectWindow(this, &remoteAddress, &remotePort, settings);
+	cWindow = new ConnectWindow(this, settings);
 
-	connect(cWindow, &QObject::destroyed, [this]() {
+	connect(cWindow, &QObject::destroyed, [this]()
+	{
 		sendRequest(Request::START_STREAM);
+	});
+
+	connect(cWindow, &ConnectWindow::gotInfo, [=] (QString host, int port,
+		QString user, QString pass)
+	{
+		remoteAddress = host;
+		remotePort = port;
+		remoteUser = user;
+		remotePass = pass;
 	});
 }
