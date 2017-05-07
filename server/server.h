@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include <QMainWindow>
+#include <QErrorMessage>
 
 #include "r2p.h"
 #include "fileBrowser.h"
@@ -28,6 +29,7 @@ private:
 	Ui::server *ui;
 
 	QSettings *settings;
+	QErrorMessage *error;
 	R2P r2p;
 	QString remoteAddress;
 	int remotePort;

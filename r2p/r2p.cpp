@@ -4,11 +4,15 @@ R2P::R2P(QObject *parent, int localPort)
 	: QObject(parent)
 	, local(this)
 {
-	connect(&local, &QTcpServer::acceptError, this, &R2P::socketError);
+	connect(&local, &QTcpServer::acceptError, [=] ()
+	{
+		R2P::errorHandler(local.errorString());
+	});
+
 	connect(&local, &QTcpServer::newConnection, this, &R2P::receiveRequest);
 
 	if (!local.listen(QHostAddress::Any, localPort)) {
-		qDebug("Error listening on 0.0.0.0:%d", localPort);
+		errorHandler(QString("Error listening on 0.0.0.0:%1").arg(localPort));
 	}
 }
 
@@ -16,9 +20,9 @@ R2P::~R2P()
 {
 }
 
-void R2P::socketError(QAbstractSocket::SocketError error)
+void R2P::errorHandler(QString errorMsg)
 {
-	qDebug() << "R2P::socketError:" << error;
+	qDebug() << errorMsg;
 }
 
 // Receive request
@@ -26,7 +30,10 @@ void R2P::socketError(QAbstractSocket::SocketError error)
 void R2P::receiveRequest()
 {
 	QTcpSocket *remote = local.nextPendingConnection();
-	connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
+	connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), [=] ()
+	{
+		R2P::errorHandler(remote->errorString());
+	});
 
 	QString *request = new QString;
 	connect(remote, &QAbstractSocket::readyRead, [=] ()
@@ -47,7 +54,10 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 	const char requestType, const QString payload)
 {
 	QTcpSocket *remote = new QTcpSocket;
-	connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
+	connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), [=] ()
+	{
+		R2P::errorHandler(remote->errorString());
+	});
 
 	remote->connectToHost(remoteAddress, remotePort);
 

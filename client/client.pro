@@ -24,11 +24,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp \
-        client.cpp
+        client.cpp \
+        connectWindow.cpp
 
-HEADERS  += client.h
+HEADERS  += client.h \
+		connectWindow.h
 
-FORMS    += client.ui
+FORMS    += client.ui \
+			connectWindow.ui
 
 RESOURCES += icons.qrc
 

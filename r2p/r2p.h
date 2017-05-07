@@ -34,7 +34,7 @@ private:
 	QTcpServer local;
 	void receiveRequest();
 
-	void socketError(QAbstractSocket::SocketError error);
+	void errorHandler(QString errorMsg);
 };
 
 #endif // R2P_H

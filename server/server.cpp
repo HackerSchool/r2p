@@ -6,6 +6,7 @@ server::server(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::server)
 	, settings(new QSettings("HackerSchool", "R2Ps"))
+	, error(QErrorMessage::qtHandler())
 	, r2p(this, 40500)
 {
 	ui->setupUi(this);
