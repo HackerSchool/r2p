@@ -17,7 +17,6 @@ client::client(QWidget *parent)
 		switch (replyType) {
 			case Reply::STREAM_STARTED:
 				// TODO: startFreerdp();
-
 			case Reply::GAME_LIST:
 				// TODO: updateGameList(reply);
 
@@ -34,6 +33,7 @@ client::client(QWidget *parent)
 		switch (requestType) {
 			case Request::STREAM_STARTED:
 				buf.append(Reply::OK);
+                std::system(qPrintable("xfreerdp -u HS -- " + remote->peerName()));
 				// TODO: startFreerdp();
 				break;
 
