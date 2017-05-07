@@ -22,7 +22,6 @@ private:
     Ui::client *ui;
 
 	R2P r2p;
-	// TODO: get these from the GUI:
 	QString remoteAddress;
 	int remotePort;
 };

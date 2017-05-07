@@ -34,16 +34,49 @@ void R2P::receiveRequest()
 		request->append(remote->readAll());
 
 		if (request->contains('\n')) {
-			qDebug() << "received request" << *request;
-			parseRequest(remote, request);
+			emit gotRequest(remote, *request);
+			delete request;
+			// remote free'd by users
+		}
+	});
+}
+
+// Send request
+void R2P::sendRequest(const QString remoteAddress, const int remotePort,
+	const char requestType, const QString payload)
+{
+	QTcpSocket *remote = new QTcpSocket;
+    connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
+
+	remote->connectToHost(remoteAddress, remotePort);
+
+	QByteArray *buf = new QByteArray;
+	buf->append(requestType).append(payload).append('\n');
+
+	connect(remote, &QAbstractSocket::connected, [=] ()
+    {
+		qDebug() << "sent request" << *buf;
+		remote->write(*buf);
+		remote->flush();
+		delete buf;
+    });
+
+	QString *reply = new QString;
+	connect(remote, &QAbstractSocket::readyRead, [=] ()
+	{
+		reply->append(remote->readAll());
+
+		if (reply->contains('\n')) {
+			emit gotReply(*reply);
+			delete reply;
 			remote->disconnectFromHost();
 			remote->deleteLater();
-			delete request;
 		}
 	});
 }
 
 // Send reply
+/*
 void R2P::parseRequest(QTcpSocket *const remote, QString *const request)
 {
 	char requestType = request->toUtf8()[0];
@@ -67,41 +100,7 @@ void R2P::parseRequest(QTcpSocket *const remote, QString *const request)
 	qDebug() << "sent reply" << replyBuffer.toUtf8();
 }
 
-// Send request
-void R2P::sendRequest(const QString remoteAddress, const int remotePort,
-	const char requestType, const QString payload)
-{
-	QTcpSocket *remote = new QTcpSocket;
-    connect(remote, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &R2P::socketError);
 
-	remote->connectToHost(remoteAddress, remotePort);
-
-	QByteArray *buf = new QByteArray;
-	buf->append(requestType).append(payload).append('\n');
-
-	connect(remote, &QAbstractSocket::connected, [=] ()
-    {
-		qDebug() << "sent request" << *buf;
-		remote->write(*buf);
-		remote->flush();
-		delete buf;
-    });
-
-    // TODO: receive reply & parse & act on it
-	QString *reply = new QString;
-	connect(remote, &QAbstractSocket::readyRead, [=] ()
-	{
-		reply->append(remote->readAll());
-
-		if (reply->contains('\n')) {
-			remote->disconnectFromHost();
-			remote->deleteLater();
-			qDebug() << "received reply" << *reply;
-			parseReply(*reply);
-			delete reply;
-		}
-	});
-}
 
 void R2P::parseReply(QString reply)
 {
@@ -119,3 +118,4 @@ void R2P::parseReply(QString reply)
 			break;
 	}
 }
+*/

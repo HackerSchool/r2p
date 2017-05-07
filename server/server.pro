@@ -38,6 +38,8 @@ FORMS    += server.ui \
 
 RESOURCES += icons.qrc
 
+QTPLUGIN += qsvg
+
 CONFIG += debug
 CONFIG -= release
 

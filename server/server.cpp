@@ -1,8 +1,6 @@
-#include "server.h"
-#include "connectWindow.h"
 #include "ui_server.h"
 
-#include <QFileDialog>
+#include "server.h"
 
 server::server(QWidget *parent)
     : QMainWindow(parent)
@@ -10,6 +8,21 @@ server::server(QWidget *parent)
     , r2p(this, 40500)
 {
     ui->setupUi(this);
+
+	connect(&r2p, &R2P::gotReply, [](QString const reply) {
+		qDebug() << "received reply" << reply;
+		// TODO: use reply
+	});
+
+	connect(&r2p, &R2P::gotRequest, [](QTcpSocket *const remote, QString const request) {
+		qDebug() << "received request" << request;
+		// TODO: send reply
+		remote->write("hello\n");
+		remote->flush();
+
+		remote->disconnectFromHost();
+		remote->deleteLater();
+	});
 }
 
 server::~server()
@@ -24,7 +37,8 @@ void server::sendRequest(char requestType, QString payload)
 
 void server::on_addGameButton_clicked()
 {
-    openFileBrowser();
+    browser = new FileBrowser(this);
+    browser->show();
 }
 
 void server::on_ConnectButton_clicked()
@@ -32,17 +46,3 @@ void server::on_ConnectButton_clicked()
     cWindow = new ConnectWindow(this);
     cWindow->show();
 }
-
-
-void server::openFileBrowser()
-{
-    browser = new FileBrowser(this);
-    browser->show();
-
-    qDebug() << browser->getPath();
-    if(!browser->getPath().isEmpty())
-    {
-       ui->listWidget->addItem(browser->getPath());
-    }
-}
-

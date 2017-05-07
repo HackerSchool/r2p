@@ -2,9 +2,10 @@
 #define SERVER_H
 
 #include <QMainWindow>
+
+#include "r2p.h"
 #include "fileBrowser.h"
 #include "connectWindow.h"
-#include "../r2p/r2p.h"
 
 namespace Ui {
 	class server;
@@ -18,10 +19,6 @@ public:
     explicit server(QWidget *parent = nullptr);
     ~server();
     void sendRequest(char requestType, QString payload);
-
-public slots:
-    void openFileBrowser();
-
 
 private slots:
     void on_ConnectButton_clicked();

@@ -1,7 +1,11 @@
 client/debug
 client/release
+client/client
+
 server/debug
 server/release
+server/server
+
 r2p/debug
 r2p/release
 

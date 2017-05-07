@@ -1,5 +1,6 @@
-#include "client.h"
 #include "ui_client.h"
+
+#include "client.h"
 
 client::client(QWidget *parent)
 	: QMainWindow(parent)
@@ -8,7 +9,19 @@ client::client(QWidget *parent)
 {
     ui->setupUi(this);
 
-	// XXX temp test
+	connect(&r2p, &R2P::gotReply, [](QString const reply) {
+		qDebug() << "received reply" << reply;
+		// TODO: use reply
+	});
+
+	connect(&r2p, &R2P::gotRequest, [](QTcpSocket *const remote, QString const request) {
+		qDebug() << "received request" << request;
+		// TODO: send reply
+		remote->disconnectFromHost();
+		remote->deleteLater();
+	});
+
+	// XXX tmp test
     r2p.sendRequest("127.0.0.1", 40500, Request::GET_GAME_LIST, "hrello");
 }
 

@@ -26,11 +26,13 @@ public:
 	void sendRequest(const QString remoteAddress, const int remotePort,
 		const char requestType, const QString payload);
 
+signals:
+	void gotReply(QString const reply);
+	void gotRequest(QTcpSocket *const remote, QString const request);
+
 private:
 	QTcpServer local;
 	void receiveRequest();
-	void parseRequest(QTcpSocket *const remote, QString *const request);
-	void parseReply(QString reply);
 
 	void socketError(QAbstractSocket::SocketError error);
 };

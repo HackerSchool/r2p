@@ -1,7 +1,7 @@
 #include "fileBrowser.h"
 #include <string>
 #include <iostream>
-#include "ui_filebrowser.h"
+#include "ui_fileBrowser.h"
 
 FileBrowser::FileBrowser(QWidget *parent) :
     QDialog(parent),
