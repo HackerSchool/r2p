@@ -5,7 +5,6 @@
 #include <QErrorMessage>
 
 #include "r2p.h"
-#include "fileBrowser.h"
 #include "connectWindow.h"
 
 namespace Ui {
@@ -36,7 +35,6 @@ private:
 	QString remoteAddress;
 	int remotePort;
 
-	FileBrowser *browser;
 	ConnectWindow *cWindow;
 };
 

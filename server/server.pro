@@ -25,15 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
         server.cpp \
-        fileBrowser.cpp \
         connectWindow.cpp
 
 HEADERS  += server.h \
-            fileBrowser.h \
 			connectWindow.h
 
 FORMS    += server.ui \
-            fileBrowser.ui \
             connectWindow.ui
 
 RESOURCES += icons.qrc

@@ -1,4 +1,5 @@
 #include "ui_server.h"
+#include <QFileDialog>
 
 #include "server.h"
 
@@ -68,8 +69,7 @@ void server::sendRequest(char requestType, QString payload)
 
 void server::on_addGameButton_clicked()
 {
-	browser = new FileBrowser(this);
-	browser->show();
+	qDebug() << QFileDialog::getOpenFileName();
 	// TODO: updateGameList(newPath)
 }
 
@@ -92,5 +92,5 @@ void server::on_connectButton_clicked()
 
 void server::on_gameList_clicked(const QModelIndex &index)
 {
-    qDebug() << index;
+	qDebug() << index;
 }
