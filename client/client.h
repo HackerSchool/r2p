@@ -19,6 +19,7 @@ public:
 	explicit client(QWidget *parent = nullptr);
 	~client();
 	void sendRequest(char requestType, QString payload = "");
+    void startFreerdp();
 
 private slots:
     void on_refreshGamesButton_clicked();

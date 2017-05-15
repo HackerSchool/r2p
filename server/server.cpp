@@ -55,6 +55,12 @@ server::~server()
 	delete settings;
 }
 
+void server::startFreerdp()
+{
+    QProcess process;
+    process.start("xfreerdp", QStringList() << "-u" << "HS --" << remoteAddress);
+}
+
 void server::sendRequest(char requestType, QString payload)
 {
 	r2p.sendRequest(remoteAddress, remotePort, requestType, payload);

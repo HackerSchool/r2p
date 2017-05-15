@@ -33,7 +33,6 @@ client::client(QWidget *parent)
 		switch (requestType) {
 			case Request::STREAM_STARTED:
 				buf.append(Reply::OK);
-                std::system(qPrintable("xfreerdp -u HS -- " + remote->peerName()));
 				// TODO: startFreerdp();
 				break;
 
@@ -53,6 +52,11 @@ client::~client()
 	delete settings;
 }
 
+void client::startFreerdp()
+{
+    QProcess process;
+    process.start("xfreerdp", QStringList() << "-u" << "HS --" << remoteAddress);
+}
 
 void client::sendRequest(char requestType, QString payload)
 {

@@ -20,6 +20,7 @@ public:
 	explicit server(QWidget *parent = nullptr);
 	~server();
 	void sendRequest(char requestType, QString payload = "");
+    void startFreerdp();
 
 private slots:
 	void on_connectButton_clicked();
