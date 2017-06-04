@@ -11,12 +11,12 @@ client::client(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	connect(&r2p, &R2P::gotReply, [](char replyType, QString const reply)
+	connect(&r2p, &R2P::gotReply, [this](char replyType, QString const reply)
 	{
 		qDebug() << "got reply" << replyType << reply;
 		switch (replyType) {
 			case Reply::STREAM_STARTED:
-				// TODO: startFreerdp();
+                startFreerdp();
 			case Reply::GAME_LIST:
 				// TODO: updateGameList(reply);
 
@@ -25,7 +25,7 @@ client::client(QWidget *parent)
 		}
 	});
 
-	connect(&r2p, &R2P::gotRequest, [](QTcpSocket *const remote,
+	connect(&r2p, &R2P::gotRequest, [this](QTcpSocket *const remote,
 		char requestType, QString const request)
 	{
 		qDebug() << "got request" << requestType << request;
@@ -33,7 +33,7 @@ client::client(QWidget *parent)
 		switch (requestType) {
 			case Request::STREAM_STARTED:
 				buf.append(Reply::OK);
-				// TODO: startFreerdp();
+                startFreerdp();
 				break;
 
 			default:
@@ -55,7 +55,7 @@ client::~client()
 void client::startFreerdp()
 {
     QProcess process;
-    process.start("xfreerdp", QStringList() << "-u" << "HS --" << remoteAddress);
+    process.start("xfreerdp", QStringList() << "-u" << remoteUser << "-p" << remotePass << "--" << remoteAddress);
 }
 
 void client::sendRequest(char requestType, QString payload)
