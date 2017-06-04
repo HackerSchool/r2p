@@ -55,7 +55,15 @@ client::~client()
 void client::startFreerdp()
 {
     QProcess process;
-    process.start("xfreerdp", QStringList() << "-u" << remoteUser << "-p" << remotePass << "--" << remoteAddress);
+    process.start("xfreerdp", QStringList() << "+auth-only"<<
+            "/multimedia:sys:alsa" << "/cert-tofu" <<
+            "/jpeg" << "/jguer-quality:90" <<
+            "/gfx:AVC420" << "+gfx-thin-client" << "+gfx-progressive" << "/gfx-h264:AVC420" <<
+            "/rfx" << "/rfx-mode:video" << "/gdi:hw" <<
+            "/compression-level:2" << "-decorations" <<
+            "+async-input" << "+async-update" << "+async-transport" << "+async-channel" <<
+            "+auto-reconect" << "/auto-reconnect-max-retries: 10" <<
+            "/u:" + remoteUser << "/p:" + remotePass << "/v:" + remoteAddress);
 }
 
 void client::sendRequest(char requestType, QString payload)
