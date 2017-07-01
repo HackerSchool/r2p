@@ -36,12 +36,12 @@ void ConnectWindow::on_buttonBox_accepted()
 	QString user = ui->user->text();
 	QString pass = ui->pass->text();
 
-	emit gotInfo(host, port, user, pass);
-
 	settings->setValue("host", host);
 	settings->setValue("port", port);
 	settings->setValue("user", user);
 	settings->setValue("pass", pass);
+
+	emit gotInfo(host, port, user, pass);
 
 	this->close();
 }

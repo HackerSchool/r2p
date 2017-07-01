@@ -41,9 +41,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="connectButton">
+        <widget class="QPushButton" name="streamButton">
          <property name="text">
           <string>Stream</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="configButton">
+         <property name="text">
+          <string>Config</string>
          </property>
         </widget>
        </item>
@@ -99,7 +106,7 @@
      <x>0</x>
      <y>0</y>
      <width>613</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuClient">

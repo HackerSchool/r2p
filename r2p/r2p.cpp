@@ -76,7 +76,7 @@ void R2P::sendRequest(const QString remoteAddress, const int remotePort,
 		reply->append(remote->readAll());
 
 		if (reply->contains('\n')) {
-			emit gotReply(reply->toUtf8()[0], reply->mid(1));
+			emit gotReply(reply->toUtf8()[0], reply->mid(1, reply->size() - 2));
 			delete reply;
 			remote->disconnectFromHost();
 			remote->deleteLater();

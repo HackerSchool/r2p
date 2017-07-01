@@ -23,7 +23,9 @@ public:
 
 private slots:
     void on_refreshGamesButton_clicked();
-	void on_connectButton_clicked();
+	void on_streamButton_clicked();
+	void on_configButton_clicked();
+	void on_gameList_clicked(const QModelIndex& index);
 
 private:
 	Ui::client *ui;
@@ -31,8 +33,10 @@ private:
 	QSettings *settings;
 	QErrorMessage *error;
 	R2P r2p;
+
+	QStringList gameList;
 	QString remoteAddress;
-	int remotePort;
+	int remotePort = 0;
 	QString remoteUser;
 	QString remotePass;
 

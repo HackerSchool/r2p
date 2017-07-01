@@ -5,20 +5,28 @@
 client::client(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::client)
-	, settings(new QSettings("HackerSchool", "R2Pc"))
-	, error(QErrorMessage::qtHandler())
+	, settings(new QSettings("HackerSchool", "R2Pclient"))
+	, error(QErrorMessage::qtHandler()) // Register graphical debug messages
 	, r2p(this, 40000)
 {
 	ui->setupUi(this);
 
+	remoteAddress = settings->value("host").toString();
+	remotePort = settings->value("port").toInt();
+	remoteUser = settings->value("user").toString();
+	remotePass = settings->value("pass").toString();
+
 	connect(&r2p, &R2P::gotReply, [this](char replyType, QString const reply)
 	{
-		qDebug() << "got reply" << replyType << reply;
 		switch (replyType) {
 			case Reply::STREAM_STARTED:
-                startFreerdp();
+				startFreerdp();
+				break;
+
 			case Reply::GAME_LIST:
-				// TODO: updateGameList(reply);
+				gameList = reply.split(SPLIT);
+				// TODO: updateGameList();
+				break;
 
 			default:
 				break;
@@ -28,12 +36,12 @@ client::client(QWidget *parent)
 	connect(&r2p, &R2P::gotRequest, [this](QTcpSocket *const remote,
 		char requestType, QString const request)
 	{
-		qDebug() << "got request" << requestType << request;
 		QString buf;
+
 		switch (requestType) {
 			case Request::STREAM_STARTED:
 				buf.append(Reply::OK);
-                startFreerdp();
+				startFreerdp();
 				break;
 
 			default:
@@ -54,16 +62,17 @@ client::~client()
 
 void client::startFreerdp()
 {
-    QProcess process;
-    process.start("xfreerdp", QStringList() << "+auth-only"<<
-            "/multimedia:sys:alsa" << "/cert-tofu" <<
-            "/jpeg" << "/jguer-quality:90" <<
-            "/gfx:AVC420" << "+gfx-thin-client" << "+gfx-progressive" << "/gfx-h264:AVC420" <<
-            "/rfx" << "/rfx-mode:video" << "/gdi:hw" <<
-            "/compression-level:2" << "-decorations" <<
-            "+async-input" << "+async-update" << "+async-transport" << "+async-channel" <<
-            "+auto-reconect" << "/auto-reconnect-max-retries: 10" <<
-            "/u:" + remoteUser << "/p:" + remotePass << "/v:" + remoteAddress);
+	QProcess process;
+	// TODO: move args out of here
+	process.execute("xfreerdp", QStringList() <<
+			"/multimedia:sys:alsa" << "/cert-tofu" <<
+			"/jpeg" << "/jpeg-quality:90" <<
+			"/gfx:AVC420" << "+gfx-thin-client" << "+gfx-progressive" << "/gfx-h264:AVC420" <<
+			"/rfx" << "/rfx-mode:video" << "/gdi:hw" <<
+			"/compression-level:2" << "-decorations" <<
+			"+async-input" << "+async-update" << "+async-transport" << "+async-channels" <<
+			"+auto-reconnect" << "/auto-reconnect-max-retries: 10" <<
+			"/u:" + remoteUser << "/p:" + remotePass << "/v:" + remoteAddress);
 }
 
 void client::sendRequest(char requestType, QString payload)
@@ -76,16 +85,17 @@ void client::on_refreshGamesButton_clicked()
 	sendRequest(Request::GET_GAME_LIST);
 }
 
-void client::on_connectButton_clicked()
+void client::on_streamButton_clicked()
+{
+	sendRequest(Request::START_STREAM);
+}
+
+void client::on_configButton_clicked()
 {
 	cWindow = new ConnectWindow(this, settings);
+	cWindow->setAttribute(Qt::WA_DeleteOnClose);
 
-	connect(cWindow, &QObject::destroyed, [this]()
-	{
-		sendRequest(Request::START_STREAM);
-	});
-
-	connect(cWindow, &ConnectWindow::gotInfo, [=] (QString host, int port,
+	connect(cWindow, &ConnectWindow::gotInfo, [this] (QString host, int port,
 		QString user, QString pass)
 	{
 		remoteAddress = host;
@@ -93,4 +103,8 @@ void client::on_connectButton_clicked()
 		remoteUser = user;
 		remotePass = pass;
 	});
+}
+
+void client::on_gameList_clicked(const QModelIndex& index)
+{
 }
