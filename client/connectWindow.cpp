@@ -11,13 +11,8 @@ ConnectWindow::ConnectWindow(QWidget *parent, QSettings *settings)
 	ui->setupUi(this);
 
 	ui->host->setText(settings->value("host").toString());
-
-	int defaultPort = settings->value("port").toInt();
-	if (defaultPort == 0) defaultPort = PORT;
-	ui->port->setText(QString::number(defaultPort));
-
+	ui->port->setText(QString::number(settings->value("port").toInt() ?: PORT));
 	ui->user->setText(settings->value("user").toString());
-
 	ui->pass->setText(settings->value("pass").toString());
 
 	this->setAttribute(Qt::WA_DeleteOnClose);

@@ -12,6 +12,10 @@ server::server(QWidget *parent)
 	ui->setupUi(this);
 
 	gameList = settings->value("gameList").value<QList<QStringList>>();
+	for (int i = 0; i < gameList.size(); i++) {
+		new QListWidgetItem(gameList.at(i).at(0), ui->gameList);
+	}
+
 	remoteAddress = settings->value("host").toString();
 	remotePort = settings->value("port").toInt();
 
@@ -38,10 +42,12 @@ server::server(QWidget *parent)
 
 			case Request::GET_GAME_LIST:
 				buf.append(Reply::GAME_LIST);
-				for (int i = 0; i < gameList.size(); i++) {
+				int i;
+				for (i = 0; i < gameList.size() - 1; i++) {
 					buf.append(gameList.at(i).at(0));
 					buf.append(SPLIT);
 				}
+				buf.append(gameList.at(i).at(0));
 				break;
 
 			default:
@@ -77,6 +83,7 @@ void server::on_addGameButton_clicked()
 	if (!gamePath.isEmpty()) {
 		gameList.append(QStringList() << QFileInfo(gamePath).baseName() << gamePath);
 		settings->setValue("gameList", QVariant::fromValue(gameList));
+		new QListWidgetItem(gameList.last().at(0), ui->gameList);
 	}
 }
 
@@ -89,7 +96,6 @@ void server::on_connectButton_clicked()
 void server::on_configButton_clicked()
 {
 	cWindow = new ConnectWindow(this, settings);
-	cWindow->setAttribute(Qt::WA_DeleteOnClose);
 
 	connect(cWindow, &ConnectWindow::gotInfo, [this] (QString host, int port)
 	{

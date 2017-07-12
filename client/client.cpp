@@ -25,7 +25,7 @@ client::client(QWidget *parent)
 
 			case Reply::GAME_LIST:
 				gameList = reply.split(SPLIT);
-				// TODO: updateGameList();
+				updateGameList();
 				break;
 
 			default:
@@ -60,6 +60,14 @@ client::~client()
 	delete settings;
 }
 
+void client::updateGameList()
+{
+	ui->gameList->clear();
+	for (int i = 0; i < gameList.size(); i++) {
+		new QListWidgetItem(gameList.at(i), ui->gameList);
+	}
+}
+
 void client::startFreerdp()
 {
 	QProcess process;
@@ -80,7 +88,7 @@ void client::sendRequest(char requestType, QString payload)
 	r2p.sendRequest(remoteAddress, remotePort, requestType, payload);
 }
 
-void client::on_refreshGamesButton_clicked()
+void client::on_connectButton_clicked()
 {
 	sendRequest(Request::GET_GAME_LIST);
 }
@@ -93,7 +101,6 @@ void client::on_streamButton_clicked()
 void client::on_configButton_clicked()
 {
 	cWindow = new ConnectWindow(this, settings);
-	cWindow->setAttribute(Qt::WA_DeleteOnClose);
 
 	connect(cWindow, &ConnectWindow::gotInfo, [this] (QString host, int port,
 		QString user, QString pass)

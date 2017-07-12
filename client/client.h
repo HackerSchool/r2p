@@ -19,10 +19,11 @@ public:
 	explicit client(QWidget *parent = nullptr);
 	~client();
 	void sendRequest(char requestType, QString payload = "");
+	void updateGameList();
     void startFreerdp();
 
 private slots:
-    void on_refreshGamesButton_clicked();
+    void on_connectButton_clicked();
 	void on_streamButton_clicked();
 	void on_configButton_clicked();
 	void on_gameList_clicked(const QModelIndex& index);
