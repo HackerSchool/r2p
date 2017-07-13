@@ -7,7 +7,7 @@ client::client(QWidget *parent)
 	, ui(new Ui::client)
 	, settings(new QSettings("HackerSchool", "R2Pclient"))
 	, error(QErrorMessage::qtHandler()) // Register graphical debug messages
-	, r2p(this, 40000)
+	, r2p(this, PORT)
 {
 	ui->setupUi(this);
 
@@ -71,12 +71,12 @@ void client::updateGameList()
 void client::startFreerdp()
 {
 	// TODO: move args out of here
-	QProcess::execute("xfreerdp", QStringList() <<
-			"/multimedia:sys:alsa" << "/cert-tofu" <<
-			"/jpeg" << "/jpeg-quality:90" <<
+	QProcess::execute("xfreerdp", QStringList() << "/f" <<
+			"/sound:sys:alsa,format:1" << "/cert-tofu" << "/cert-ignore" <<
+			"/jpeg" << "/jpeg-quality:10" <<
 			"/gfx:AVC420" << "+gfx-thin-client" << "+gfx-progressive" << "/gfx-h264:AVC420" <<
 			"/rfx" << "/rfx-mode:video" << "/gdi:hw" <<
-			"/compression-level:2" << "-decorations" <<
+			"/compression" << "-decorations" << "-menu-anims" << "/fonts" <<
 			"+async-input" << "+async-update" << "+async-transport" << "+async-channels" <<
 			"+auto-reconnect" << "/auto-reconnect-max-retries: 10" <<
 			"/u:" + remoteUser << "/p:" + remotePass << "/v:" + remoteAddress);

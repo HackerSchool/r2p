@@ -7,7 +7,7 @@ server::server(QWidget *parent)
 	, ui(new Ui::server)
 	, settings(new QSettings("HackerSchool", "R2Pserver"))
 	, error(QErrorMessage::qtHandler()) // Register graphical debug messages
-	, r2p(this, 40500)
+	, r2p(this, PORT)
 {
 	ui->setupUi(this);
 
@@ -71,7 +71,7 @@ void server::startGame(int gameIndex)
 {
 	if (gameIndex == -1) return;
 
-	QProcess::execute(gameList.at(gameIndex).at(0));
+	QProcess::startDetached(gameList.at(gameIndex).at(0));
 }
 
 void server::startRDP()

@@ -11,7 +11,9 @@ ConnectWindow::ConnectWindow(QWidget *parent, QSettings *settings)
 	ui->setupUi(this);
 
 	ui->host->setText(settings->value("host").toString());
-	ui->port->setText(QString::number(settings->value("port").toInt() ?: PORT));
+	int defaultPort = settings->value("port").toInt();
+	if (defaultPort == 0) defaultPort = PORT;
+	ui->port->setText(QString::number(defaultPort));
 
 	this->setAttribute(Qt::WA_DeleteOnClose);
 	this->show();
