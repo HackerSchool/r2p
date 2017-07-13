@@ -70,9 +70,8 @@ void client::updateGameList()
 
 void client::startFreerdp()
 {
-	QProcess process;
 	// TODO: move args out of here
-	process.execute("xfreerdp", QStringList() <<
+	QProcess::execute("xfreerdp", QStringList() <<
 			"/multimedia:sys:alsa" << "/cert-tofu" <<
 			"/jpeg" << "/jpeg-quality:90" <<
 			"/gfx:AVC420" << "+gfx-thin-client" << "+gfx-progressive" << "/gfx-h264:AVC420" <<
@@ -95,7 +94,7 @@ void client::on_connectButton_clicked()
 
 void client::on_streamButton_clicked()
 {
-	sendRequest(Request::START_STREAM);
+	sendRequest(Request::START_STREAM, QString::number(ui->gameList->currentRow()));
 }
 
 void client::on_configButton_clicked()
@@ -110,8 +109,4 @@ void client::on_configButton_clicked()
 		remoteUser = user;
 		remotePass = pass;
 	});
-}
-
-void client::on_gameList_clicked(const QModelIndex& index)
-{
 }

@@ -41,7 +41,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="connectButton">
+        <widget class="QPushButton" name="streamButton">
          <property name="text">
           <string>Stream</string>
          </property>
@@ -95,24 +95,11 @@
        <item>
         <widget class="QListWidget" name="gameList">
          <property name="spacing">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
-         <item>
-          <property name="text">
-           <string>Test</string>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Test2</string>
-          </property>
-         </item>
         </widget>
        </item>
       </layout>

@@ -26,7 +26,6 @@ private slots:
     void on_connectButton_clicked();
 	void on_streamButton_clicked();
 	void on_configButton_clicked();
-	void on_gameList_clicked(const QModelIndex& index);
 
 private:
 	Ui::client *ui;

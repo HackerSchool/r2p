@@ -36,6 +36,7 @@ server::server(QWidget *parent)
 		QString buf;
 		switch (requestType) {
 			case Request::START_STREAM:
+				startGame(request.toInt());
 				startRDP();
 				buf.append(Reply::STREAM_STARTED);
 				break;
@@ -66,6 +67,13 @@ server::~server()
 	delete settings;
 }
 
+void server::startGame(int gameIndex)
+{
+	if (gameIndex == -1) return;
+
+	QProcess::execute(gameList.at(gameIndex).at(0));
+}
+
 void server::startRDP()
 {
 }
@@ -87,8 +95,9 @@ void server::on_addGameButton_clicked()
 	}
 }
 
-void server::on_connectButton_clicked()
+void server::on_streamButton_clicked()
 {
+	startGame(ui->gameList->currentRow());
 	startRDP();
 	sendRequest(Request::STREAM_STARTED);
 }
@@ -102,8 +111,4 @@ void server::on_configButton_clicked()
 		remoteAddress = host;
 		remotePort = port;
 	});
-}
-
-void server::on_gameList_clicked(const QModelIndex& index)
-{
 }

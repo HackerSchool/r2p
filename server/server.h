@@ -20,13 +20,13 @@ public:
 	explicit server(QWidget *parent = nullptr);
 	~server();
 	void sendRequest(char requestType, QString payload = "");
+    void startGame(int gameIndex);
     void startRDP();
 
 private slots:
 	void on_addGameButton_clicked();
-	void on_connectButton_clicked();
+	void on_streamButton_clicked();
 	void on_configButton_clicked();
-    void on_gameList_clicked(const QModelIndex &index);
 
 private:
 	Ui::server *ui;
