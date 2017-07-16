@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>server</string>
+   <string>R2P Server</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/resources/icons/h.png</normaloff>:/icons/resources/icons/h.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -113,12 +117,12 @@
      <x>0</x>
      <y>0</y>
      <width>613</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuserver">
     <property name="title">
-     <string>Server</string>
+     <string>R2P Server</string>
     </property>
     <addaction name="actionQuit"/>
    </widget>
@@ -129,8 +133,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="Tango" resource="icons.qrc">
-     <normaloff>:/icons/Tango/scalable/actions/exit.svg</normaloff>:/icons/Tango/scalable/actions/exit.svg</iconset>
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/resources/icons/exit.svg</normaloff>:/icons/resources/icons/exit.svg</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -142,7 +146,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="icons.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections>
   <connection>

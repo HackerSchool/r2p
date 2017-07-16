@@ -33,7 +33,8 @@ HEADERS  += client.h \
 FORMS    += client.ui \
 			connectWindow.ui
 
-RESOURCES += icons.qrc
+RESOURCES += \
+    resources.qrc
 
 QTPLUGIN += qsvg
 

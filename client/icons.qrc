@@ -1,6 +1,0 @@
-<?xml version="1.0" ?>
-<RCC version="1.0">
-	<qresource prefix="icons/Tango">
-		<file alias="scalable/actions/exit.svg">resources/icons/exit.svg</file>
-	</qresource>
-</RCC>

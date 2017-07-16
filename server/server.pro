@@ -33,7 +33,8 @@ HEADERS  += server.h \
 FORMS    += server.ui \
             connectWindow.ui
 
-RESOURCES += icons.qrc
+RESOURCES += \
+    resources.qrc
 
 QTPLUGIN += qsvg
 
@@ -52,3 +53,5 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../r2p/debu
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../r2p/release/r2p.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../r2p/debug/r2p.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../r2p/libr2p.a
+
+DISTFILES +=
