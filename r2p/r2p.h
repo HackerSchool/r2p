@@ -29,6 +29,7 @@ public:
 signals:
 	void gotReply(char replyType, QString const reply);
 	void gotRequest(QTcpSocket *const remote, char requestType, QString const request);
+	void error(QString errorMsg);
 
 private:
 	QTcpServer local;

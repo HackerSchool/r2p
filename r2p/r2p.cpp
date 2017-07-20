@@ -22,7 +22,7 @@ R2P::~R2P()
 
 void R2P::errorHandler(QString errorMsg)
 {
-	qDebug() << errorMsg;
+	emit error(errorMsg);
 }
 
 // Receive request

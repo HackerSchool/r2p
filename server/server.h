@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QErrorMessage>
+#include <QMessageBox>
 #include <QFileDialog>
 
 #include "r2p.h"
@@ -32,7 +33,7 @@ private:
 	Ui::server *ui;
 
 	QSettings *settings;
-	QErrorMessage *error;
+	//QErrorMessage *error;
 	R2P r2p;
 
 	// Each game in the list is itself a list in the format:

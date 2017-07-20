@@ -6,7 +6,7 @@ server::server(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::server)
 	, settings(new QSettings("HackerSchool", "R2Pserver"))
-	, error(QErrorMessage::qtHandler()) // Register graphical debug messages
+	//, error(QErrorMessage::qtHandler()) // Register graphical debug messages
 	, r2p(this, PORT)
 {
 	ui->setupUi(this);
@@ -18,6 +18,11 @@ server::server(QWidget *parent)
 
 	remoteAddress = settings->value("host").toString();
 	remotePort = settings->value("port").toInt();
+
+	connect(&r2p, &R2P::error, [this](QString errorMsg)
+	{
+		QMessageBox::warning(this, tr("Network Error"), errorMsg);
+	});
 
 	connect(&r2p, &R2P::gotReply, [](char replyType, QString const reply)
 	{

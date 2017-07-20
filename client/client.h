@@ -2,7 +2,8 @@
 #define CLIENT_H
 
 #include <QMainWindow>
-#include <QErrorMessage>
+//#include <QErrorMessage>
+#include <QMessageBox>
 
 #include "r2p.h"
 #include "connectWindow.h"
@@ -31,7 +32,7 @@ private:
 	Ui::client *ui;
 
 	QSettings *settings;
-	QErrorMessage *error;
+	//QErrorMessage *error;
 	R2P r2p;
 
 	QStringList gameList;
