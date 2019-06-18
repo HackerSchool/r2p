@@ -25,11 +25,3 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += r2p.cpp
 
 HEADERS += r2p.h
-
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
-
-CONFIG -= debug
-CONFIG += release
